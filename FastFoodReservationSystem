@@ -1,0 +1,140 @@
+   import javafx.application.Application;
+   import javafx.geometry.Insets;
+   import javafx.geometry.Pos;
+   import javafx.scene.Scene;
+   import javafx.scene.control.Button;
+   import javafx.scene.control.Label;
+   import javafx.scene.layout.GridPane;
+   import javafx.scene.layout.VBox;
+   import javafx.stage.Stage;
+   import javafx.scene.layout.HBox;
+   
+   
+   // Class for representing a table
+   class Table {
+      private int tableNumber;
+      private boolean occupied;
+   
+      public Table(int tableNumber) {
+         this.tableNumber = tableNumber;
+         this.occupied = false;
+      }
+   
+      public int getTableNumber() {
+         return tableNumber;
+      }
+   
+      public boolean isOccupied() {
+         return occupied;
+      }
+   
+      public void setOccupied(boolean occupied) {
+         this.occupied = occupied;
+      
+      }
+   }
+      
+   
+   public class FastFoodReservationSystem extends Application {
+   
+      private Table[] tables = {new Table(1), new Table(2), new Table(3), new Table(4), new Table(5)}; 
+   
+      @Override
+      public void start(Stage primaryStage) {
+         // UI components
+         VBox root = new VBox(10);
+         root.setPadding(new Insets(20));
+         root.setAlignment(Pos.CENTER);
+      
+         Label titleLabel = new Label("Fast Food Reservation System");
+         Label instructionLabel = new Label("Click on a table to assign a customer:");
+      
+         GridPane gridPane = new GridPane();
+         gridPane.setHgap(10);
+         gridPane.setVgap(10);   
+      
+      
+      
+         // Buttons for tables
+         addButtonToGrid(gridPane, 1, 0, 0);
+         addButtonToGrid(gridPane, 2, 1, 0);
+         addButtonToGrid(gridPane, 3, 2, 0);
+         addButtonToGrid(gridPane, 4, 3, 0);
+         addButtonToGrid(gridPane, 5, 4, 0);
+            
+         
+         root.getChildren().addAll(titleLabel, instructionLabel, gridPane);   
+         root.setStyle("-fx-background-color: yellow;"); 
+      
+         // Scene setup
+         Scene scene = new Scene(root, 750, 500);
+         primaryStage.setScene(scene);     
+         primaryStage.setTitle("Fast Food Reservation System");
+         primaryStage.setResizable(false);
+         primaryStage.show();
+         
+      }
+   
+      private void addButtonToGrid(GridPane gridPane, int tableNumber, int colIndex, int rowIndex) {
+         Button tableButton = new Button("Table " + tableNumber);
+         Button unoccupyButton = new Button("Unoccupy"); 
+         Button ParesOverloadButton = new Button("ParesOverload");
+         Button FriedChknButton = new Button("FriedChicken");
+      
+         
+         tableButton.setOnAction(
+               e -> {
+                  if (!tables[tableNumber - 1].isOccupied()) {
+                     tables[tableNumber - 1].setOccupied(true);
+                     tableButton.setStyle("-fx-background-color: #FF6347;"); // Change button color to indicate occupied
+                     System.out.println("Table " + tableNumber + " is now occupied.");
+                  } else {
+                     System.out.println("Table " + tableNumber + " is already occupied.");
+                  }
+               });
+      
+         unoccupyButton.setOnAction(
+               e -> {
+                  tables[tableNumber - 1].setOccupied(false);
+                  tableButton.setStyle(""); 
+                  ParesOverloadButton.setStyle(""); 
+                  FriedChknButton.setStyle("");
+                  System.out.println("Table " + tableNumber + " is now unoccupied.");
+               });
+      
+         
+      
+         ParesOverloadButton.setOnAction(
+            e ->{           
+               ParesOverloadButton.setStyle("-fx-background-color: red;");           
+               System.out.println("Estimated time for Table " + tableNumber + ": 30 minutes");
+            });
+      
+           
+            
+            
+         FriedChknButton.setOnAction(
+            e -> {
+               FriedChknButton.setStyle("-fx-background-color: red;");
+               System.out.println("Estimated time for Table " + tableNumber + ": 25 minutes");
+            });
+        
+         HBox buttonBox = new HBox(5);       
+         buttonBox.getChildren().addAll(tableButton, unoccupyButton);
+         gridPane.add(buttonBox, colIndex, rowIndex);
+         
+         HBox estimateBox = new HBox(5);
+         estimateBox.getChildren().add(ParesOverloadButton);
+         gridPane.add(estimateBox, colIndex, rowIndex + 1);
+         
+         HBox estimateBox1 = new HBox(5);
+         estimateBox1.getChildren().add(FriedChknButton);
+         gridPane.add(estimateBox1, colIndex, rowIndex + 2);
+         
+      }
+   
+      public static void main(String[] args) {
+         launch(args);
+      }
+   }
+   
